@@ -58,8 +58,21 @@ def trocar_pok(i):
     pok_total['text'] = pokemon[i]['status'][4]
 
     #habilidades
-    pok_hb1['text'] = Pk.GetPokemonAtack1(i)
-    pok_hb2['text'] = Pk.GetPokemonAtack2(i)
+    hb1 = str(Pk.GetPokemonAtack1(i)).replace("[", "")
+    hb1 = hb1.replace("'", "")
+    hb1 = hb1.replace("]", "")
+
+    hb2 = str(Pk.GetPokemonAtack2(i)).replace("[", "")
+    hb2 = hb2.replace("'", "")
+    hb2 = hb2.replace("]", "")
+    hb2 = hb2.replace("{", "")
+    hb2 = hb2.replace("}", "")
+
+    print(hb1)
+    print(hb2)
+    #hb1 = hb1.replace("}", "")
+    pok_hb1['text'] = hb1
+    pok_hb2['text'] = hb2
 
 #Frame
 frame_pokemon = Frame(janela, width=550, height=290, relief='flat')
