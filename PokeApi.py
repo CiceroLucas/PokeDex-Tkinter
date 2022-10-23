@@ -23,4 +23,14 @@ def GetPokemonSprite(pokemon):
     data = apiLink.json()[0]['sprite']
     return data
 
+def GetPokemonAtack1(pokemon):
+    apiLink = requests.get(f"https://pokeapi.glitch.me/v1/pokemon/{pokemon}")
+    data = apiLink.json()[0]['abilities']['normal']
+    return data
+
+def GetPokemonAtack2(pokemon):
+    apiLink = requests.get(f"https://pokeapi.glitch.me/v1/pokemon/{pokemon}")
+    data = apiLink.json()[0]['abilities']['hidden']
+    return data
+
 

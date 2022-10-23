@@ -52,14 +52,14 @@ def trocar_pok(i):
 
     #status
     pok_hp['text'] = pokemon[i]['status'][0]
-    pok_atack['text'] = Pk.GerPokemonAtack1(i)
+    pok_atack['text'] = pokemon[i]['status'][1]
     pok_defesa['text'] = pokemon[i]['status'][2]
     pok_velocidade['text'] = pokemon[i]['status'][3]
     pok_total['text'] = pokemon[i]['status'][4]
 
     #habilidades
-    pok_hb1['text'] = pokemon[i]['habilidades'][0]
-    pok_hb2['text'] = pokemon[i]['habilidades'][1]
+    pok_hb1['text'] = Pk.GetPokemonAtack1(i)
+    pok_hb2['text'] = Pk.GetPokemonAtack2(i)
 
 #Frame
 frame_pokemon = Frame(janela, width=550, height=290, relief='flat')
