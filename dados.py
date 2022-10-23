@@ -1,6 +1,6 @@
 pokemon = {
     'Pikachu': {
-        "status": ['HP: 300', 'Ataque: 600', 'Defesa: 500', 'Velocidade:300', 'Total: 1.700'],
+        "status": ['HP: 300', 'Ataque: 600', 'Defesa: 500', 'Velocidade: 300', 'Total: 1.700'],
         "habilidades": ['Choque do Trovão', 'Cabeçada'],
         "tipo": ['#025', 'elétrico', 'images/pikachu.png', '#FCC719'],
     },

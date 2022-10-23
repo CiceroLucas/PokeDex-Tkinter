@@ -1,14 +1,15 @@
+
 from tkinter import *
 from dados import *
 from tkinter import ttk
 from PIL import Image, ImageTk
-
+import PokeApi as Pk
+import urllib, io
+from threading import Thread
 co0 = "#444466" #Preta
 co1 = "#feffff" #Branca
-co2 = "#6f9fbd" #Azul
-co3 = "#38576b" #Valor
 co4 = "#403d3d" #Letra
-co5 = "#ef5350" #Vermelha
+
 
 janela = Tk()
 janela.title('')
@@ -20,23 +21,29 @@ ttk.Separator(janela, orient=HORIZONTAL).grid(row=0, columnspan=1, ipadx=272)
 style = ttk.Style(janela)
 style.theme_use("clam")
 
+
 def trocar_pok(i):
+
+    LinkImagem = urllib.request.urlopen(Pk.GetPokemonSprite(i)).read()
+    im = Image.open(io.BytesIO(LinkImagem))
+    im = im.resize((238, 238))
+
     global imagem_pokemon, pok_image
 
     frame_pokemon['bg'] = pokemon[i]['tipo'][3]
 
-    pok_nome['text'] = i
+    pok_nome['text'] = Pk.GetPokemonName(i)
     pok_nome['bg'] = pokemon[i]['tipo'][3]
-    pok_tipo['text'] = pokemon[i]['tipo'][1]
+    pok_tipo['text'] = Pk.GetPokemonType(i)
     pok_tipo['bg'] = pokemon[i]['tipo'][3]
-    pok_id['text'] = pokemon[i]['tipo'][0]
+    pok_id['text'] = Pk.GetPokemonID(i)
     pok_id['bg'] = pokemon[i]['tipo'][3]
 
     imagem_pokemon = pokemon[i]['tipo'][2]
 
     imagem_pokemon = Image.open(imagem_pokemon)
     imagem_pokemon = imagem_pokemon.resize((238, 238))
-    imagem_pokemon = ImageTk.PhotoImage(imagem_pokemon)
+    imagem_pokemon = ImageTk.PhotoImage(im)
 
     pok_image = Label(frame_pokemon, relief='flat', image=imagem_pokemon, font=('Ivy 10 bold'), bg=pokemon[i]['tipo'][3], fg=co1)
     pok_image.place(x=60, y=50)
@@ -45,7 +52,7 @@ def trocar_pok(i):
 
     #status
     pok_hp['text'] = pokemon[i]['status'][0]
-    pok_atack['text'] = pokemon[i]['status'][1]
+    pok_atack['text'] = Pk.GerPokemonAtack1(i)
     pok_defesa['text'] = pokemon[i]['status'][2]
     pok_velocidade['text'] = pokemon[i]['status'][3]
     pok_total['text'] = pokemon[i]['status'][4]
@@ -67,6 +74,12 @@ pok_tipo.place(x=12, y=50)
 #id
 pok_id = Label(frame_pokemon, text='', relief='flat', anchor=CENTER, font=('Ivy 10 bold'), bg=co1, fg=co1)
 pok_id.place(x=12, y=75)
+
+#Loading
+
+loading = ttk.Progressbar(janela, orient='horizontal',mode='determinate', length=100)
+loading.place(x=15, y=290)
+loading.start(50)
 
 #Status
 pok_status = Label(janela, text='Status', relief='flat', anchor=CENTER, font=('Verdana 20'), bg=co1, fg=co0)
@@ -109,44 +122,46 @@ imagem_pokemon_1 = Image.open('images/cabeca-pikachu.png')
 imagem_pokemon_1 = imagem_pokemon_1.resize((40, 40))
 imagem_pokemon_1 = ImageTk.PhotoImage(imagem_pokemon_1)
 
-b_pok_1 = Button(janela, command=lambda:trocar_pok('Pikachu'), relief='flat', image=imagem_pokemon_1,  text='Pikachu', width=150 ,  overrelief=RIDGE,compound=LEFT , anchor=NW, padx=5 ,font=('Verdana 12'),  bg=co1, fg=co0)
+b_pok_1 = Button(janela, command=lambda:Thread(target=trocar_pok('Pikachu')).start(), relief='flat', image=imagem_pokemon_1,  text='Pikachu', width=150 ,  overrelief=RIDGE,compound=LEFT , anchor=NW, padx=5 ,font=('Verdana 12'),  bg=co1, fg=co0)
 b_pok_1.place(x=375, y=10)
 
 imagem_pokemon_2 = Image.open('images/cabeca-bulbasaur.png')
 imagem_pokemon_2 = imagem_pokemon_2.resize((40, 40))
 imagem_pokemon_2 = ImageTk.PhotoImage(imagem_pokemon_2)
 
-b_pok_2 = Button(janela, command=lambda:trocar_pok('Bulbasaur'), relief='flat', image=imagem_pokemon_2,  text='Bulbasaur', width=150 ,  overrelief=RIDGE,compound=LEFT , anchor=NW, padx=5 ,font=('Verdana 12'),  bg=co1, fg=co0)
+b_pok_2 = Button(janela, command=lambda:Thread(target=trocar_pok('Bulbasaur')), relief='flat', image=imagem_pokemon_2,  text='Bulbasaur', width=150 ,  overrelief=RIDGE,compound=LEFT , anchor=NW, padx=5 ,font=('Verdana 12'),  bg=co1, fg=co0)
 b_pok_2.place(x=375, y=65)
 
 imagem_pokemon_3 = Image.open('images/cabeca-charmander.png')
 imagem_pokemon_3 = imagem_pokemon_3.resize((40, 40))
 imagem_pokemon_3 = ImageTk.PhotoImage(imagem_pokemon_3)
 
-b_pok_3 = Button(janela, command=lambda:trocar_pok('Charmander'), relief='flat', image=imagem_pokemon_3,  text='Charmander', width=150 ,  overrelief=RIDGE,compound=LEFT , anchor=NW, padx=5 ,font=('Verdana 12'),  bg=co1, fg=co0)
+b_pok_3 = Button(janela, command=lambda:Thread(target=trocar_pok('Charmander')), relief='flat', image=imagem_pokemon_3,  text='Charmander', width=150 ,  overrelief=RIDGE,compound=LEFT , anchor=NW, padx=5 ,font=('Verdana 12'),  bg=co1, fg=co0)
 b_pok_3.place(x=375, y=120)
 
 imagem_pokemon_4 = Image.open('images/cabeca-dragonite.png')
 imagem_pokemon_4 = imagem_pokemon_4.resize((40, 40))
 imagem_pokemon_4 = ImageTk.PhotoImage(imagem_pokemon_4)
 
-b_pok_4 = Button(janela, relief='flat', command=lambda:trocar_pok('Dragonite'), image=imagem_pokemon_4,  text='Dragonite', width=150 ,  overrelief=RIDGE,compound=LEFT , anchor=NW, padx=5 ,font=('Verdana 12'),  bg=co1, fg=co0)
+b_pok_4 = Button(janela, relief='flat', command=lambda:Thread(target=trocar_pok('Dragonite')), image=imagem_pokemon_4,  text='Dragonite', width=150 ,  overrelief=RIDGE,compound=LEFT , anchor=NW, padx=5 ,font=('Verdana 12'),  bg=co1, fg=co0)
 b_pok_4.place(x=375, y=175)
 
 imagem_pokemon_5 = Image.open('images/cabeca-gengar.png')
 imagem_pokemon_5 = imagem_pokemon_5.resize((40, 40))
 imagem_pokemon_5 = ImageTk.PhotoImage(imagem_pokemon_5)
 
-b_pok_5 = Button(janela, relief='flat', command=lambda:trocar_pok('Gengar'), image=imagem_pokemon_5,  text='Gengar', width=150 ,  overrelief=RIDGE,compound=LEFT , anchor=NW, padx=5 ,font=('Verdana 12'),  bg=co1, fg=co0)
+b_pok_5 = Button(janela, relief='flat', command=lambda:Thread(target=trocar_pok('Gengar')), image=imagem_pokemon_5,  text='Gengar', width=150 ,  overrelief=RIDGE,compound=LEFT , anchor=NW, padx=5 ,font=('Verdana 12'),  bg=co1, fg=co0)
 b_pok_5.place(x=375, y=230)
 
 imagem_pokemon_6 = Image.open('images/cabeca-gyarados.png')
 imagem_pokemon_6 = imagem_pokemon_6.resize((40, 40))
 imagem_pokemon_6 = ImageTk.PhotoImage(imagem_pokemon_6)
 
-b_pok_6 = Button(janela, relief='flat', command=lambda:trocar_pok('Gyarados'), image=imagem_pokemon_6,  text='Gyarados', width=150 ,  overrelief=RIDGE,compound=LEFT , anchor=NW, padx=5 ,font=('Verdana 12'),  bg=co1, fg=co0)
+b_pok_6 = Button(janela, relief='flat', command=lambda:Thread(target=trocar_pok('Gyarados')), image=imagem_pokemon_6,  text='Gyarados', width=150 ,  overrelief=RIDGE,compound=LEFT , anchor=NW, padx=5 ,font=('Verdana 12'),  bg=co1, fg=co0)
 b_pok_6.place(x=375, y=285)
 
-trocar_pok('Charmander')
+Thread(target=trocar_pok('Charmander'))
+
+
 
 janela.mainloop()
